@@ -4,7 +4,7 @@ import AjouterProjet from './AjouterProjet'
 import DetaillerProjet from './DetaillerProjet'
 
 // URL de notre fausse API (json-server)
-const API_URL = 'http://localhost:3001/projets'
+const API_URL = '/api/projects'
 
 // ============================================================
 // Dossier — composant principal qui gère TOUTE la liste des projets
