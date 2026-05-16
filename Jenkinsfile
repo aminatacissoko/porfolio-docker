@@ -94,7 +94,7 @@ Tu recevras un autre mail à la fin du build.
                         ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} '
                             cd ${REMOTE_DIR} &&
                             docker compose -f docker-compose.prod.yml pull &&
-                            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+                            docker compose -f docker-compose.prod.yml up -d --remove-orphans --force-recreate
                         '
                     """
                 }
