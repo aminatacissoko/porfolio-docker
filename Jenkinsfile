@@ -18,7 +18,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Récupération du code source...'
-                mail(
+                emailext(
                     to: "${MAIL_DESTINATAIRE}",
                     subject: "Jenkins - Build #${env.BUILD_NUMBER} DÉMARRÉ",
                     body: """
@@ -85,7 +85,7 @@ Tu recevras un autre mail à la fin du build.
         stage('Deploy') {
             steps {
                 echo 'Déploiement sur le serveur Docker...'
-                sshagent(['ssh-serveur-distant']) {
+                sshagent(['docker-server-ssh']) { 
                     sh """
                         scp -o StrictHostKeyChecking=no \
                             docker-compose.prod.yml \
@@ -111,7 +111,7 @@ Tu recevras un autre mail à la fin du build.
 
     post {
         success {
-            mail(
+            emailext(
                 to: "${MAIL_DESTINATAIRE}",
                 subject: "Jenkins - Build #${env.BUILD_NUMBER} RÉUSSI",
                 body: """
@@ -134,7 +134,7 @@ Images publiées sur Docker Hub :
             )
         }
         failure {
-            mail(
+            emailext(
                 to: "${MAIL_DESTINATAIRE}",
                 subject: "Jenkins - Build #${env.BUILD_NUMBER} ÉCHOUÉ",
                 body: """
