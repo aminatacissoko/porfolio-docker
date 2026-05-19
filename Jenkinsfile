@@ -7,7 +7,7 @@ pipeline {
         IMAGE_BACKEND     = "${DOCKERHUB_USER}/portfolio-backend"
         IMAGE_TAG         = "${env.BUILD_NUMBER}"
         REMOTE_USER       = "amina"
-        REMOTE_HOST       = "172.26.145.159"
+        REMOTE_HOST       = "172.19.11.190"
         REMOTE_DIR        = "/home/amina/porfolio-docker"
         MAIL_DESTINATAIRE = "aminataci20@gmail.com"
         DOCKERHUB_CREDS   = credentials('dockerhub-credentials')
@@ -25,7 +25,7 @@ pipeline {
 Bonjour Amina,
 
 Le pipeline Jenkins vient de démarrer.
-
+ 
 Projet  : ${env.JOB_NAME}
 Build   : #${env.BUILD_NUMBER}
 Démarré : ${new Date()}
