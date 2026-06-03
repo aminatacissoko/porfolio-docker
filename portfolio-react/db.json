@@ -1,0 +1,41 @@
+{
+  "projets": [
+    {
+      "id": "1",
+      "titre": "Audit de Sécurité",
+      "description": "Analyse de vulnérabilités sur un environnement virtuel avec VMware et VirtualBox.",
+      "technologies": [
+        "VMware",
+        "Nmap",
+        "Linux"
+      ],
+      "icone": "",
+      "github": ""
+    },
+    {
+      "id": "2",
+      "titre": "Portfolio Web",
+      "description": "Création d'un portfolio personnel avec HTML, CSS et Tailwind CSS.",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "Tailwind"
+      ],
+      "icone": "",
+      "github": ""
+    },
+    {
+      "id": "3",
+      "titre": "Atelier Cybersécurité",
+      "description": "Organisation d'ateliers pratiques sur Linux, réseaux et outils d'analyse.",
+      "technologies": [
+        "Linux",
+        "Wireshark",
+        "Réseaux"
+      ],
+      "icone": "",
+      "github": ""
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
