@@ -2,13 +2,23 @@ pipeline {
     agent any
 
     stages {
+        stage('Notification début') {
+            steps {
+                emailext(
+                    to: 'aminataci20@gmail.com',
+                    subject: "🚀 Build DÉMARRÉ - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: "Le build ${env.BUILD_NUMBER} vient de démarrer.\n\nURL: ${env.BUILD_URL}"
+                )
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Build Docker') {
             steps {
                 bat 'docker-compose up --build -d'
             }
@@ -16,23 +26,18 @@ pipeline {
     }
 
     post {
-        always {
+        success {
             emailext(
                 to: 'aminataci20@gmail.com',
-                subject: "Jenkins Build ${currentBuild.result} - ${env.JOB_NAME}",
-                body: """
-                    Build ${currentBuild.result}
-                    Job: ${env.JOB_NAME}
-                    Build Number: ${env.BUILD_NUMBER}
-                    URL: ${env.BUILD_URL}
-                """
+                subject: "✅ Build RÉUSSI - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Le build ${env.BUILD_NUMBER} s'est terminé avec succès.\n\nURL: ${env.BUILD_URL}"
             )
         }
-        started {
+        failure {
             emailext(
                 to: 'aminataci20@gmail.com',
-                subject: "Jenkins Build DÉMARRÉ - ${env.JOB_NAME}",
-                body: "Le build ${env.BUILD_NUMBER} vient de démarrer."
+                subject: "❌ Build ÉCHOUÉ - ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                body: "Le build ${env.BUILD_NUMBER} a échoué.\n\nURL: ${env.BUILD_URL}"
             )
         }
     }
