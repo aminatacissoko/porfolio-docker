@@ -28,8 +28,8 @@ pipeline {
                     // Utilisation sécurisée des identifiants Jenkins
                     withCredentials([string(credentialsId: 'token-SonarQub', variable: 'MY_SONAR_TOKEN')]) {
                         withSonarQubeEnv('SonarQube-Local') {
-                            // Injection sécurisée du Token et des clés du projet SonarQube
-                            bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille de projets\" -Dsonar.projectName=\"portefeuille de projets\""
+                            // Clé sans espace (avec tirets) et Nom avec espaces
+                            bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille-de-projets\" -Dsonar.projectName=\"portefeuille de projets\""
                         }
                     }
                 }
