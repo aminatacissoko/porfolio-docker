@@ -45,9 +45,9 @@ pipeline {
 
         stage('Build Docker') {
             steps {
-                bat 'docker-compose down'
-                bat 'docker rm -f sonar-db || true'
-                bat 'docker-compose up --build -d'
+                echo 'Mise à jour et reconstruction ciblée de l\'application...'
+                // Relance et recompile uniquement l'application de votre portfolio
+                bat 'docker-compose up --build -d frontend backend mongodb'
             }
         }
     }
