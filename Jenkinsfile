@@ -25,13 +25,11 @@ pipeline {
                     // Récupère l'outil automatique "sonar-scanner" configuré dans Jenkins Tools
                     def scannerHome = tool 'sonar-scanner'
                     
-                    // 👇 Utilisation sécurisée des identifiants Jenkins
-                    // On charge le contenu de 'token-SonarQub' dans une variable cachée nommée MY_SONAR_TOKEN
+                    // Utilisation sécurisée des identifiants Jenkins
                     withCredentials([string(credentialsId: 'token-SonarQub', variable: 'MY_SONAR_TOKEN')]) {
-                        
                         withSonarQubeEnv('SonarQube-Local') {
-                            // On injecte la variable cachée. Jenkins va masquer sa valeur par "****" dans la console
-                            bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN}"
+                            // Injection sécurisée du Token et des clés du projet SonarQube
+                            bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille de projets\" -Dsonar.projectName=\"portefeuille de projets\""
                         }
                     }
                 }
@@ -41,6 +39,7 @@ pipeline {
         stage('Contrôle Qualité (Quality Gate)') {
             steps {
                 echo 'Attente du retour de SonarQube (Webhook)...'
+                // Jenkins attend le feu vert du conteneur SonarQube avant de déployer
                 timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
@@ -50,6 +49,7 @@ pipeline {
         stage('Build Docker') {
             steps {
                 echo 'Mise à jour et reconstruction ciblée de l\'application...'
+                // Relance et recompile uniquement l'application de votre portfolio
                 bat 'docker-compose up --build -d frontend backend mongodb'
             }
         }
