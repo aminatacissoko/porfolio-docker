@@ -20,15 +20,15 @@ pipeline {
 
         stage('Analyse SonarQube') {
             steps {
-                echo 'Lancement de l\'analyse de qualité avec exclusions...'
+                echo 'Lancement de l\'analyse ciblée sur le code important...'
                 script {
                     def scannerHome = tool 'sonar-scanner'
                     
                     withCredentials([string(credentialsId: 'token-SonarQub', variable: 'MY_SONAR_TOKEN')]) {
                         withSonarQubeEnv('SonarQube-Local') {
                             withEnv(["SONAR_SCANNER_OPTS=-Xmx1024m -Dfile.encoding=UTF-8"]) {
-                                // 👇 AJOUT DE L'EXCLUSION : Empêche le scanner de planter sur les dépendances node_modules
-                                bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille-de-projets\" -Dsonar.projectName=\"portefeuille de projets\" -Dsonar.exclusions=\"**/node_modules/**\""
+                                // 👇 MODIFICATION : On cible uniquement les dossiers de code et on désactive les capteurs serveurs/cloud (IaC)
+                                bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille-de-projets\" -Dsonar.projectName=\"portefeuille de projets\" -Dsonar.exclusions=\"**/node_modules/**,**/sonar-db/**\" -Dsonar.iac.activated=false"
                             }
                         }
                     }
