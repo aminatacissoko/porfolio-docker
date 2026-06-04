@@ -18,9 +18,35 @@ pipeline {
             }
         }
 
+        stage('Analyse SonarQube') {
+            steps {
+                echo 'Lancement de l\'analyse de qualité...'
+                script {
+                    // Récupère l'outil automatique "sonar-scanner" configuré dans Jenkins Tools
+                    def scannerHome = tool 'sonar-scanner'
+                    
+                    // Utilise la liaison avec le serveur "SonarQube-Local"
+                    withSonarQubeEnv('SonarQube-Local') {
+                        bat "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+
+        stage('Contrôle Qualité (Quality Gate)') {
+            steps {
+                echo 'Attente du retour de SonarQube (Webhook)...'
+                // Jenkins attend le feu vert du conteneur SonarQube avant de déployer
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
         stage('Build Docker') {
             steps {
                 bat 'docker-compose down'
+                bat 'docker rm -f sonar-db || true'
                 bat 'docker-compose up --build -d'
             }
         }
