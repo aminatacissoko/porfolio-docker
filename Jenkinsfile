@@ -20,15 +20,15 @@ pipeline {
 
         stage('Analyse SonarQube') {
             steps {
-                echo 'Lancement de l\'analyse ciblée sur le code important...'
+                echo 'Lancement de l\'analyse exclusive sur le code source...'
                 script {
                     def scannerHome = tool 'sonar-scanner'
                     
                     withCredentials([string(credentialsId: 'token-SonarQub', variable: 'MY_SONAR_TOKEN')]) {
                         withSonarQubeEnv('SonarQube-Local') {
                             withEnv(["SONAR_SCANNER_OPTS=-Xmx1024m -Dfile.encoding=UTF-8"]) {
-                                // 👇 MODIFICATION : On cible uniquement les dossiers de code et on désactive les capteurs serveurs/cloud (IaC)
-                                bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille-de-projets\" -Dsonar.projectName=\"portefeuille de projets\" -Dsonar.exclusions=\"**/node_modules/**,**/sonar-db/**\" -Dsonar.iac.activated=false"
+                                // 👇 MODIFICATION : On cible uniquement vos dossiers de code (React et Express) et on désactive les capteurs serveurs
+                                bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille-de-projets\" -Dsonar.projectName=\"portefeuille de projets\" -Dsonar.sources=\"porfolio-expressjs-mongodb,portfolio-react\" -Dsonar.iac.activated=false"
                             }
                         }
                     }
