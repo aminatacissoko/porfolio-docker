@@ -46,8 +46,8 @@ pipeline {
 
         stage('Build Docker') {
             steps {
-                echo 'Mise à jour et reconstruction ciblée de l\'application...'
-                bat 'docker-compose up --build -d frontend backend'
+                echo 'Reconstruction des images Docker...'
+                bat 'docker-compose build frontend backend'
             }
         }
     }
