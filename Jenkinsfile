@@ -27,7 +27,6 @@ pipeline {
                     withCredentials([string(credentialsId: 'token-SonarQub', variable: 'MY_SONAR_TOKEN')]) {
                         withSonarQubeEnv('SonarQube-Local') {
                             withEnv(["SONAR_SCANNER_OPTS=-Xmx1024m -Dfile.encoding=UTF-8"]) {
-                                // 👇 MODIFICATION : On cible uniquement vos dossiers de code (React et Express) et on désactive les capteurs serveurs
                                 bat "${scannerHome}/bin/sonar-scanner -Dsonar.token=${MY_SONAR_TOKEN} -Dsonar.projectKey=\"portefeuille-de-projets\" -Dsonar.projectName=\"portefeuille de projets\" -Dsonar.sources=\"porfolio-expressjs-mongodb,portfolio-react\" -Dsonar.iac.activated=false"
                             }
                         }
@@ -48,7 +47,7 @@ pipeline {
         stage('Build Docker') {
             steps {
                 echo 'Mise à jour et reconstruction ciblée de l\'application...'
-                bat 'docker-compose up --build -d frontend backend mongodb'
+                bat 'docker-compose up --build -d frontend backend'
             }
         }
     }
