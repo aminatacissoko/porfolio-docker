@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 })
 
 // Lancement du serveur
-app.listen(process.env.PORT, () => {
-  console.log(`Serveur lancé sur le port ${process.env.PORT}`)
+const PORT = process.env.PORT || 5000
+app.listen(PORT, () => {
+  console.log(`Serveur lancé sur le port ${PORT}`)
 })

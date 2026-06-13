@@ -5,7 +5,6 @@ import DetaillerProjet from './DetaillerProjet'
 
 // URL de notre fausse API (json-server)
 const API_URL = 'http://localhost:5000/api/projects'
-
 // ============================================================
 // Dossier — composant principal qui gère TOUTE la liste des projets
 // Il est responsable de :
